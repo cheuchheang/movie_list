@@ -1,21 +1,23 @@
 import React, { useEffect } from "react";
 import MovieApi from "common/api/MovieApi";
 import { APIKey } from "common/api/MovieApiKey";
+import { useAppDispatch } from "features/hooks";
+import { addMovies } from "features/movies/movieSlice";
 
 const MovieListing = () => {
+  const movieText = "Harry";
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    const movieText = "Harry";
     const fetchMovies = async () => {
-      const response = await MovieApi.get(
+      const response: any = await MovieApi.get(
         `?apiKey=${APIKey}&s=${movieText}&type=movie`
-      ).catch((err)=>{
-        console.log("Err:",err);
-        
-      })
-      console.log("Respone:",response); 
+      ).catch((err) => {
+        console.log("Err:", err);
+      });
+      dispatch(addMovies(response.data));
     };
-    fetchMovies()
-  },[]);
+    fetchMovies();
+  }, []);
   return <div className="banner-img"></div>;
 };
 
